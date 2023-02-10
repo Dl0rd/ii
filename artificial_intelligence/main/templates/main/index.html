@@ -1,0 +1,48 @@
+{% extends 'main/base.html'%}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+<h1 class="mt-5">{{ title }}</h1>
+<div class="card text-center mt-3">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item">
+        <a class="nav-link active">Основное</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Напиши сюда свой текст</label>
+        {{ forms.full_text }}
+        <button type="submit" class="btn btn-primary mt-2">Предсказать</button>
+
+      </div>
+    </form>
+  </div>
+</div>
+{% if predictions %}
+  {% if response_type %}
+    <div class="alert alert-success mt-2">
+      {% for el in predictions %}
+      <h3>Оно позитивное</h3>
+      <h5>Ваше собшение: "{{ el.full_text }}"</h5>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-danger mt-2">
+      {% for el in predictions %}
+        <h3>Оно негативное</h3>
+        <h5>Ваше собшение: "{{ el.full_text }}"</h5>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% else %}
+<div class="alert alert-primary mt-2">
+  <h3>Я готов к работе</h3>
+</div>
+{% endif %}
+{% endblock %}
